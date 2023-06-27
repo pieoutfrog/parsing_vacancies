@@ -1,6 +1,7 @@
 import requests
 import json
 from abc import ABC, abstractmethod
+import os
 
 
 class API(ABC):
@@ -20,6 +21,8 @@ class API(ABC):
 
 class HeadHunterAPI(API):
 
+    api_key: str = os.getenv('HH_API_KEY')
+
     def __init__(self, api_key):
         """Наследование инит от супер-класса, инициализация базовой ссылки"""
         super().__init__(api_key)
@@ -34,6 +37,8 @@ class HeadHunterAPI(API):
 
 
 class SuperJobAPI(API):
+
+    api_key: str = os.getenv('SJ_API_KEY')
 
     def __init__(self, api_key):
         """Наследование инит от супер-класса, инициализация базовой ссылки"""
