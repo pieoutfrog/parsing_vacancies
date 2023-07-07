@@ -1,58 +1,46 @@
-from abc import abstractmethod, ABC
-
-import simplejson as json
-from src.vacancies import Vacancies
+import abc
+import json
 
 
-class VacancyStorage(ABC):
-    def __init__(self, filepath):
-        self.filepath = filepath
-
-    @abstractmethod
-    def load_vacancies(self):
+class VacanciesFile(abc.ABC):
+    @abc.abstractmethod
+    def save_vacancies(self, vacancies):
         pass
 
-    @abstractmethod
-    def save_vacancies(self):
+    @abc.abstractmethod
+    def get_vacancies(self, **criteria):
         pass
 
-    @abstractmethod
-    def get_vacancies(self):
-        pass
-
-    @abstractmethod
-    def add_vacancy(self, vacancy):
-        pass
-
-    @abstractmethod
-    def delete_vacancy(self, vacancy):
+    @abc.abstractmethod
+    def delete_vacancies(self, **criteria):
         pass
 
 
-class JsonVacancyStorage(VacancyStorage):
-    def __init__(self, filepath):
-        super().__init__(filepath)
-        self.vacancies = None
-        self.load_vacancies()
+class JsonVacanciesFile(VacanciesFile):
+    def __init__(self, file_path):
+        self.file_path = file_path
 
-    def load_vacancies(self):
-        try:
-            with open(self.filepath, "r") as f:
-                self.vacancies = json.load(f)
-        except FileNotFoundError:
-            self.vacancies = []
+    def save_vacancies(self, vacancies):
+        with open(self.file_path, 'w') as f:
+            json.dump(vacancies, f, ensure_ascii=False)
 
-    def save_vacancies(self):
-        with open(self.filepath, "w") as f:
-            json.dump(self.vacancies, f)
+    def get_vacancies(self, **criteria):
+        with open(self.file_path, 'r') as f:
+            vacancies = json.load(f)
+        result = []
+        for vacancy in vacancies:
+            # Проверяем, соответствует ли вакансия критериям поиска
+            if all(getattr(vacancy, key) == value for key, value in criteria.items()):
+                result.append(vacancy)
+        return result
 
-    def get_vacancies(self):
-        return self.vacancies
-
-    def add_vacancy(self, vacancy):
-        self.vacancies.append(vacancy)
-        self.save_vacancies()
-
-    def delete_vacancy(self, vacancy):
-        self.vacancies.remove(vacancy)
-        self.save_vacancies()
+    def delete_vacancies(self, **criteria):
+        with open(self.file_path, 'r') as f:
+            vacancies = json.load(f)
+        result = []
+        for vacancy in vacancies:
+            # Проверяем, соответствует ли вакансия критериям удаления
+            if not all(getattr(vacancy, key) == value for key, value in criteria.items()):
+                result.append(vacancy)
+        with open(self.file_path, 'w') as f:
+            json.dump(result, f, ensure_ascii=False)
