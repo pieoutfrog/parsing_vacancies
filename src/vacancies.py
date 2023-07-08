@@ -1,6 +1,15 @@
 class Vacancies:
+    """Класс для работы с вакансиями"""
+
     def __init__(self, url: str, salary: float, description: str, title: str, area: str, experience: str):
-        self.url = url
+        """
+        :param url: ссылка на вакансию
+        :param salary: зарплата
+        :param description: описание
+        :param title: название вакансии
+        :param area: область, где размещена вакансия
+        :param experience: требуемый опыт
+                """
         if salary is None or salary == '0' or salary == 0:
             self.salary = 0.0
         else:
@@ -9,9 +18,13 @@ class Vacancies:
         self.title = title
         self.area = area
         self.experience = experience
+        self.url = url
         self.validate()
 
     def validate(self):
+        """
+        Класс, валидирующий данные
+        """
         if not isinstance(self.title, str):
             raise ValueError("Название должно быть строкой")
         if not isinstance(self.url, str):
@@ -24,9 +37,16 @@ class Vacancies:
             raise ValueError("Регион должен быть строкой")
 
     def to_dict(self):
+        """
+        Метод для приведения атрибутов к словарю
+        :return: словарь с вакансиями
+        """
         return self.__dict__
 
     def __str__(self):
+        """
+        :return: f-строка, выводящая данные в удобном формате
+        """
         return f"""Название вакансии: {self.title}
 Зарплата: {self.salary}
 Требуемый опыт: {self.experience}
@@ -36,6 +56,10 @@ class Vacancies:
 
     def __eq__(self, other):
         return self.salary == other.salary
+
+    """
+    Методы сравнения зарплат
+    """
 
     def __ne__(self, other):
         return not self.__eq__(other)
