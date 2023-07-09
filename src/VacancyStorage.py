@@ -56,20 +56,20 @@ class JsonVacanciesFile(VacanciesFile):
                                   title=vacancy['title'], area=vacancy['area'], experience=vacancy['experience']))
         else:
             criteria.pop('f')
-        if f == 'in':
-            for vacancy in vacancies:
-                # Проверяем, соответствует ли вакансия критериям поиска
-                if all(vacancy.get(key) in value for key, value in criteria.items()):
-                    result.append(
-                        Vacancies(url=vacancy['url'], salary=vacancy['salary'], description=vacancy['description'],
-                                  title=vacancy['title'], area=vacancy['area'], experience=vacancy['experience']))
-        elif f == 'contains':
-            for vacancy in vacancies:
-                # Проверяем, соответствует ли вакансия критериям поиска
-                if all(any(v in vacancy.get(key) for v in value) for key, value in criteria.items()):
-                    result.append(
-                        Vacancies(url=vacancy['url'], salary=vacancy['salary'], description=vacancy['description'],
-                                  title=vacancy['title'], area=vacancy['area'], experience=vacancy['experience']))
+            if f == 'in':
+                for vacancy in vacancies:
+                    # Проверяем, соответствует ли вакансия критериям поиска
+                    if all(vacancy.get(key) in value for key, value in criteria.items()):
+                        result.append(
+                            Vacancies(url=vacancy['url'], salary=vacancy['salary'], description=vacancy['description'],
+                                      title=vacancy['title'], area=vacancy['area'], experience=vacancy['experience']))
+            elif f == 'contains':
+                for vacancy in vacancies:
+                    # Проверяем, соответствует ли вакансия критериям поиска
+                    if all(any(v in vacancy.get(key) for v in value) for key, value in criteria.items()):
+                        result.append(
+                            Vacancies(url=vacancy['url'], salary=vacancy['salary'], description=vacancy['description'],
+                                      title=vacancy['title'], area=vacancy['area'], experience=vacancy['experience']))
         return result
 
     def delete_vacancies(self, **criteria):

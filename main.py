@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
             elif choice == '2':
                 # запрашиваем у пользователя ключевые слова для поиска
-                keywords = input('Введите ключевые слова через запятую: ').lower()
+                keywords = input('Введите ключевые слова через запятую: ')
                 keywords = [x.strip() for x in keywords.split(',')]
                 # получаем вакансии с указанными ключевыми словами в описании
                 vacancies = vacancies_file.get_vacancies(description=keywords, f='contains')
