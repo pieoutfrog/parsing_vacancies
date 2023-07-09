@@ -35,7 +35,7 @@ class JsonVacanciesFile(VacanciesFile):
         :param vacancies: вакансии
         """
         with open(self.file_path, 'w') as f:
-            json.dump(vacancies, f, ensure_ascii=False)
+            json.dump(vacancies, f, ensure_ascii=False, separators=(',', ':'))
 
     def get_vacancies(self, **criteria):
         """

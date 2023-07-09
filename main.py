@@ -61,7 +61,8 @@ if __name__ == "__main__":
             print('1. Получить вакансии с указанных платформ')
             print('2. Найти вакансии по ключевым словам в описании')
             print('3. Получить топ N вакансий по зарплате')
-            print('4. Выход')
+            print('4. Найти вакансии по опыту')
+            print('5. Выход')
 
             # запрашиваем у пользователя выбранный пункт меню
             choice = input('Введите номер пункта меню: ')
@@ -94,6 +95,15 @@ if __name__ == "__main__":
                     print(v)
 
             elif choice == '4':
+                # запрашиваем у пользователя ключевые слова для поиска
+                keywords = input('Введите ключевые слова через запятую: ').title()
+                keywords = [x.strip() for x in keywords.split(',')]
+                # получаем вакансии с указанными ключевыми словами в опыте работы
+                vacancies = vacancies_file.get_vacancies(experience=keywords, f='contains')
+                for v in vacancies:
+                    print(v)
+
+            elif choice == '5':
                 # выходим из программы
                 break
 
